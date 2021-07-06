@@ -1,21 +1,23 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { useFonts } from 'expo-font';
+import {
+  OpenSans_400Regular,
+  OpenSans_600SemiBold,
+} from '@expo-google-fonts/open-sans';
+import { OdibeeSans_400Regular } from '@expo-google-fonts/odibee-sans';
+import AppLoading from 'expo-app-loading';
+import Routes from './scr/routes/index.routes';
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+  const [fontsLoaded, error] = useFonts({
+    OpenSans_400Regular,
+    OpenSans_600SemiBold,
+    OdibeeSans_400Regular,
+  });
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  }
+  return <Routes />;
+}
