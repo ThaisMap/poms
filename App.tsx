@@ -17,7 +17,18 @@ export default function App() {
   });
 
   if (!fontsLoaded) {
-    return <AppLoading />;
+    return (
+      <>
+        <StatusBar style='light' />
+        <AppLoading />
+      </>
+    );
   }
-  return <Routes />;
+
+  return (
+    <>
+      <StatusBar style='light' />
+      <Routes />
+    </>
+  );
 }
