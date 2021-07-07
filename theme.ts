@@ -9,6 +9,9 @@ const theme = {
     regular: 'OpenSans_400Regular',
     semibold: 'OpenSans_600SemiBold',
   },
+  spacing: (size: number = 1) => {
+    return size * 8;
+  },
 };
 
 export default theme;
