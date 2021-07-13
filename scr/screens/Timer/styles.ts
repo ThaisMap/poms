@@ -12,13 +12,13 @@ export const styles = StyleSheet.create({
   },
   timer: {
     color: theme.colors.primary,
-    fontSize: 100,
+    fontSize: 102,
     fontFamily: theme.fonts.numeric,
   },
   completed: {
     fontFamily: theme.fonts.numeric,
     color: theme.colors.primary,
-    fontSize: 24,
+    fontSize: 16,
     alignSelf: 'flex-end',
   },
   sound: {

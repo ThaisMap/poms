@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { styles } from './styles';
 import { View, Text, Pressable } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import theme from '../../../theme';
+import { Audio } from 'expo-av';
 
 export default function Timer() {
   const { primary } = theme.colors;
-  const [timeLeft, setTimeLeft] = useState(1500);
+  const [timeLeft, setTimeLeft] = useState(5);
   const [pomsCompleted, setPomsCompleted] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
   const [hasStarted, setHasStarted] = useState(false);
@@ -15,6 +16,51 @@ export default function Timer() {
   const iconPlayPause = isRunning ? 'pause' : 'play-arrow';
   const iconSound = isSoundOn ? 'music-off' : 'music-note';
 
+  const [alarm, setAlarm] = useState<Audio.Sound>();
+
+  async function playAlarm() {
+    console.log('Loading Sound');
+    const { sound } = await Audio.Sound.createAsync(
+      require('../../../assets/alarm.mp3')
+    );
+    setAlarm(sound);
+
+    console.log('Playing Sound');
+    await sound.playAsync();
+  }
+
+  useEffect(() => {
+    return alarm
+      ? () => {
+          console.log('Unloading Sound');
+          alarm.unloadAsync();
+        }
+      : undefined;
+  }, [alarm]);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      if (isRunning) {
+        setTimeLeft(timeLeft - 1);
+        if (timeLeft <= 1) {
+          playAlarm();
+          alert('terminou');
+          resetStates();
+        }
+      }
+    }, 1000);
+    return () => {
+      clearInterval(timer);
+    };
+  });
+
+  const resetStates = () => {
+    setIsRunning(false);
+    setHasStarted(false);
+    setPomsCompleted(pomsCompleted + 1);
+    setTimeLeft(5);
+  };
+
   const onPressSound = () => {
     setIsSoundOn(!isSoundOn);
   };
@@ -22,14 +68,10 @@ export default function Timer() {
   const onPressPlay = () => {
     setIsRunning(!isRunning);
     setHasStarted(true);
-    setTimeLeft(timeLeft - 1);
   };
 
   const onPressStop = () => {
-    setPomsCompleted(pomsCompleted + 1);
-    setIsRunning(false);
-    setTimeLeft(timeLeft - 1);
-    setHasStarted(false);
+    resetStates();
   };
 
   const convertSecondsToTimeString = (seconds: number): string => {
@@ -45,7 +87,7 @@ export default function Timer() {
   return (
     <View style={styles.container}>
       <Pressable style={styles.sound} onPress={onPressSound}>
-        <MaterialIcons name={iconSound} size={48} color={primary} />
+        <MaterialIcons name={iconSound} size={36} color={primary} />
       </Pressable>
       <View>
         <Text style={styles.timer}>{convertSecondsToTimeString(timeLeft)}</Text>
