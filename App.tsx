@@ -7,7 +7,7 @@ import {
 } from '@expo-google-fonts/open-sans';
 import { OdibeeSans_400Regular } from '@expo-google-fonts/odibee-sans';
 import AppLoading from 'expo-app-loading';
-import Routes from './scr/routes/index.routes';
+import Routes from './src/routes/index.routes';
 
 export default function App() {
   const [fontsLoaded, error] = useFonts({
@@ -19,7 +19,7 @@ export default function App() {
   if (!fontsLoaded) {
     return (
       <>
-        <StatusBar style='light' />
+        <StatusBar style="light" />
         <AppLoading />
       </>
     );
@@ -27,7 +27,7 @@ export default function App() {
 
   return (
     <>
-      <StatusBar style='light' />
+      <StatusBar style="light" />
       <Routes />
     </>
   );

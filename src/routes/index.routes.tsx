@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { NavigationContainer, DarkTheme } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import Configurations from '../screens/Configurations';
 import BreakTasks from '../screens/BreakTasks';
 import Report from '../screens/Report';
 import Timer from '../screens/Timer';
@@ -32,34 +33,45 @@ export default function Routes() {
           iconStyle: {
             fontSize: 12,
           },
-        }}>
+        }}
+      >
         <Tab.Screen
-          name='timer'
+          name="timer"
           component={Timer}
           options={{
             tabBarLabel: 'Timer',
             tabBarIcon: ({ color }) => (
-              <FontAwesome5 name='clock' color={color} size={16} />
+              <FontAwesome5 name="clock" color={color} size={16} />
             ),
           }}
         />
         <Tab.Screen
-          name='report'
+          name="report"
           component={Report}
           options={{
             tabBarLabel: 'Relatório',
             tabBarIcon: ({ color }) => (
-              <Ionicons name='stats-chart' color={color} size={16} />
+              <Ionicons name="stats-chart" color={color} size={16} />
             ),
           }}
         />
         <Tab.Screen
-          name='pausas'
+          name="pausas"
           component={BreakTasks}
           options={{
             tabBarLabel: 'Pausas',
             tabBarIcon: ({ color }) => (
-              <FontAwesome5 name='check-circle' color={color} size={16} />
+              <FontAwesome5 name="check-circle" color={color} size={16} />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="config"
+          component={Configurations}
+          options={{
+            tabBarLabel: 'Configs',
+            tabBarIcon: ({ color }) => (
+              <FontAwesome5 name="cog" color={color} size={16} />
             ),
           }}
         />
