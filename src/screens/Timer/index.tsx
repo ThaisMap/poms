@@ -4,15 +4,26 @@ import { View, Text, Pressable } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import theme from '../../../theme';
 import { Audio } from 'expo-av';
+import pt from '../../locales/pt-BR';
+const config = {
+  pomodoro: 5,
+  shortBrake: 1,
+  longBrake: 3,
+  pomsBeforeLongBrake: 4,
+  reputationActive: false,
+  pomsSound: '',
+  brakesSound: '',
+  alarmSound: '../../../assets/alarm.mp3',
+};
 
 export default function Timer() {
   const { primary } = theme.colors;
-  const [timeLeft, setTimeLeft] = useState(5);
+  const [timeLeft, setTimeLeft] = useState(config.pomodoro);
   const [pomsCompleted, setPomsCompleted] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
   const [hasStarted, setHasStarted] = useState(false);
   const [isSoundOn, setIsSoundOn] = useState(true);
-
+  const [status, setStatus] = useState(pt.pomodoro);
   const iconPlayPause = isRunning ? 'pause' : 'play-arrow';
   const iconSound = isSoundOn ? 'music-off' : 'music-note';
 
@@ -44,8 +55,7 @@ export default function Timer() {
         setTimeLeft(timeLeft - 1);
         if (timeLeft <= 1) {
           playAlarm();
-          alert('terminou');
-          resetStates();
+          onFinishTimer();
         }
       }
     }, 1000);
@@ -57,8 +67,31 @@ export default function Timer() {
   const resetStates = () => {
     setIsRunning(false);
     setHasStarted(false);
-    setPomsCompleted(pomsCompleted + 1);
-    setTimeLeft(5);
+  };
+
+  const onFinishTimer = () => {
+    resetStates();
+    console.log('status: ', status);
+    console.log('done: ', pomsCompleted);
+
+    if (status === pt.pomodoro) {
+      const shouldSetLongBrake =
+        config.pomsBeforeLongBrake !== 0 &&
+        (pomsCompleted + 1) % config.pomsBeforeLongBrake === 0;
+      setPomsCompleted(pomsCompleted + 1);
+
+      if (shouldSetLongBrake) {
+        setStatus(pt.longBrake);
+        setTimeLeft(config.longBrake);
+      } else {
+        setStatus(pt.shortBrake);
+        setTimeLeft(config.shortBrake);
+      }
+    } else {
+      setStatus(pt.pomodoro);
+      setTimeLeft(config.pomodoro);
+      return;
+    }
   };
 
   const onPressSound = () => {
@@ -101,6 +134,25 @@ export default function Timer() {
             </Pressable>
           )}
         </View>
+      </View>
+      <View style={styles.statusContainer}>
+        <Text
+          style={status === pt.pomodoro ? styles.currentStatus : styles.status}
+        >
+          {pt.pomodoro}
+        </Text>
+        <Text
+          style={
+            status === pt.shortBrake ? styles.currentStatus : styles.status
+          }
+        >
+          {pt.shortBrake}
+        </Text>
+        <Text
+          style={status === pt.longBrake ? styles.currentStatus : styles.status}
+        >
+          {pt.longBrake}
+        </Text>
       </View>
       <Text style={styles.completed}>{pomsCompleted}</Text>
     </View>

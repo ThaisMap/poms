@@ -21,9 +21,19 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     alignSelf: 'flex-end',
   },
-  sound: {
-    marginTop: theme.spacing(2),
-    alignSelf: 'flex-end',
+  sound: { marginTop: theme.spacing(2), alignSelf: 'flex-end' },
+  statusContainer: { flexDirection: 'row', alignItems: 'center' },
+  status: {
+    fontFamily: theme.fonts.numeric,
+    color: theme.colors.text,
+    fontSize: 20,
+    paddingHorizontal: theme.spacing(2),
+  },
+  currentStatus: {
+    fontFamily: theme.fonts.numeric,
+    color: theme.colors.primary,
+    fontSize: 24,
+    paddingHorizontal: theme.spacing(2),
   },
   controles: {
     flexDirection: 'row',
