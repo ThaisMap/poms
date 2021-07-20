@@ -8,6 +8,7 @@ import Timer from '../screens/Timer';
 import theme from '../../theme';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
 
 const Tab = createBottomTabNavigator();
 
@@ -22,6 +23,7 @@ const MyTheme = {
 };
 
 export default function Routes() {
+  const { t } = useTranslation();
   return (
     <NavigationContainer theme={MyTheme}>
       <Tab.Navigator
@@ -39,7 +41,7 @@ export default function Routes() {
           name="timer"
           component={Timer}
           options={{
-            tabBarLabel: 'Timer',
+            tabBarLabel: t('nav.timer'),
             tabBarIcon: ({ color }) => (
               <FontAwesome5 name="clock" color={color} size={16} />
             ),
@@ -49,7 +51,7 @@ export default function Routes() {
           name="report"
           component={Report}
           options={{
-            tabBarLabel: 'Relatório',
+            tabBarLabel: t('nav.report'),
             tabBarIcon: ({ color }) => (
               <Ionicons name="stats-chart" color={color} size={16} />
             ),
@@ -59,7 +61,7 @@ export default function Routes() {
           name="pausas"
           component={BreakTasks}
           options={{
-            tabBarLabel: 'Pausas',
+            tabBarLabel: t('nav.break'),
             tabBarIcon: ({ color }) => (
               <FontAwesome5 name="check-circle" color={color} size={16} />
             ),
@@ -69,7 +71,7 @@ export default function Routes() {
           name="config"
           component={Configurations}
           options={{
-            tabBarLabel: 'Configs',
+            tabBarLabel: t('nav.config'),
             tabBarIcon: ({ color }) => (
               <FontAwesome5 name="cog" color={color} size={16} />
             ),

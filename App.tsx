@@ -8,6 +8,7 @@ import {
 import { OdibeeSans_400Regular } from '@expo-google-fonts/odibee-sans';
 import AppLoading from 'expo-app-loading';
 import Routes from './src/routes/index.routes';
+import './src/i18n';
 
 export default function App() {
   const [fontsLoaded, error] = useFonts({

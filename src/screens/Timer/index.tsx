@@ -4,26 +4,29 @@ import { View, Text, Pressable } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import theme from '../../../theme';
 import { Audio } from 'expo-av';
-import pt from '../../locales/pt-BR';
+import { useTranslation } from 'react-i18next';
+import TimerTypes from '../../enums/timerTypes';
+
 const config = {
   pomodoro: 5,
-  shortBrake: 1,
-  longBrake: 3,
-  pomsBeforeLongBrake: 4,
+  shortBreak: 1,
+  longBreak: 3,
+  pomsBeforeLongBreak: 4,
   reputationActive: false,
   pomsSound: '',
-  brakesSound: '',
+  breaksSound: '',
   alarmSound: '../../../assets/alarm.mp3',
 };
 
 export default function Timer() {
+  const { t } = useTranslation();
   const { primary } = theme.colors;
   const [timeLeft, setTimeLeft] = useState(config.pomodoro);
   const [pomsCompleted, setPomsCompleted] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
   const [hasStarted, setHasStarted] = useState(false);
   const [isSoundOn, setIsSoundOn] = useState(true);
-  const [status, setStatus] = useState(pt.pomodoro);
+  const [status, setStatus] = useState(TimerTypes.pomodoro);
   const iconPlayPause = isRunning ? 'pause' : 'play-arrow';
   const iconSound = isSoundOn ? 'music-off' : 'music-note';
 
@@ -74,21 +77,21 @@ export default function Timer() {
     console.log('status: ', status);
     console.log('done: ', pomsCompleted);
 
-    if (status === pt.pomodoro) {
-      const shouldSetLongBrake =
-        config.pomsBeforeLongBrake !== 0 &&
-        (pomsCompleted + 1) % config.pomsBeforeLongBrake === 0;
+    if (status === TimerTypes.pomodoro) {
+      const shouldSetLongBreak =
+        config.pomsBeforeLongBreak !== 0 &&
+        (pomsCompleted + 1) % config.pomsBeforeLongBreak === 0;
       setPomsCompleted(pomsCompleted + 1);
 
-      if (shouldSetLongBrake) {
-        setStatus(pt.longBrake);
-        setTimeLeft(config.longBrake);
+      if (shouldSetLongBreak) {
+        setStatus(TimerTypes.longBreak);
+        setTimeLeft(config.longBreak);
       } else {
-        setStatus(pt.shortBrake);
-        setTimeLeft(config.shortBrake);
+        setStatus(TimerTypes.shortBreak);
+        setTimeLeft(config.shortBreak);
       }
     } else {
-      setStatus(pt.pomodoro);
+      setStatus(TimerTypes.pomodoro);
       setTimeLeft(config.pomodoro);
       return;
     }
@@ -137,21 +140,31 @@ export default function Timer() {
       </View>
       <View style={styles.statusContainer}>
         <Text
-          style={status === pt.pomodoro ? styles.currentStatus : styles.status}
+          style={
+            status === TimerTypes.pomodoro
+              ? styles.currentStatus
+              : styles.status
+          }
         >
-          {pt.pomodoro}
+          {t('pomodoro')}
         </Text>
         <Text
           style={
-            status === pt.shortBrake ? styles.currentStatus : styles.status
+            status === TimerTypes.shortBreak
+              ? styles.currentStatus
+              : styles.status
           }
         >
-          {pt.shortBrake}
+          {t('shortBreak')}
         </Text>
         <Text
-          style={status === pt.longBrake ? styles.currentStatus : styles.status}
+          style={
+            status === TimerTypes.longBreak
+              ? styles.currentStatus
+              : styles.status
+          }
         >
-          {pt.longBrake}
+          {t('longBreak')}
         </Text>
       </View>
       <Text style={styles.completed}>{pomsCompleted}</Text>
